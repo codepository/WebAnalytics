@@ -1,0 +1,9 @@
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "plugins": ["babel-plugin-transform-vue-jsx","@babel/plugin-transform-runtime",["import", {
+    "libraryName": "iview",
+    "libraryDirectory": "src/components"
+  }]]
+}

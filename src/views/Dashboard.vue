@@ -1,5 +1,6 @@
 <template>
   <v-container
+    id="x"
     fill-height
     fluid
     grid-list-xl
@@ -10,8 +11,8 @@
     home
   </v-container>
 </template>
-
 <script>
+import './../utils/hm_test'
 export default {
   components: {
   },
@@ -21,7 +22,6 @@ export default {
     }
   },
   mounted () {
-    console.log('home')
   },
   methods: {
 

@@ -1,10 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
-const MAINHOST = 'http://218.5.3.84:31380'
-// const MAINHOST = 'http://fzrb.fznews.com.cn'
-const BASE_URL = process.env.NODE_ENV === 'production' ? MAINHOST : './'
 class HttpRequest {
-  constructor (baseUrl = BASE_URL) {
+  constructor (baseUrl) {
     this.baseUrl = baseUrl
     this.queue = {}
   }

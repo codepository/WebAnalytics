@@ -21,5 +21,10 @@ export default [
   {
     path: '/icons',
     view: 'Icons'
+  },
+  {
+    path: '/login',
+    name: 'login',
+    view: 'login/login'
   }
 ]

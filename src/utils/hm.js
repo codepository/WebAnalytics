@@ -40,13 +40,13 @@
   var x = !1 // false
   // mt.cookie 设备cookie
   mt.cookie = {}
-  mt.cookie.set = function (a, b, d) { // 设置cookie
+  mt.cookie.set = function (a, b, d) { // 设置cookie, a为'Hm_ck_' + +new Date()，
     var e
     d.O && (e = new Date(), e.setTime(e.getTime() + d.O))
     document.cookie = a + '=' + b + (d.domain ? '; domain=' + d.domain : '') + (d.path ? '; path=' + d.path : '') + (e ? '; expires=' + e.toGMTString() : '') + (d.qc ? '; secure' : '')
   }
   mt.cookie.get = function (a) { // 获取cookie
-    return (a = RegExp('(^| )' + a + '=([^;]*)(;|$)').exec(document.cookie)) ? a[2] : w
+    return a = (RegExp('(^| )' + a + '=([^;]*)(;|$)').exec(document.cookie)) ? a[2] : w
   }
   mt.cookie.Nb = function (a, b) {
     try {
@@ -115,7 +115,8 @@
     return (a = a.match(/^(https?:)\/\//)) ? a[1] : w
   }
   mt.url.vb = function (a) { // 获取地址a的域名
-    return (a = a.match(/^(https?:\/\/)?([^\/\?#]*)/)) ? a[2].replace(/.*@/, '') : w
+    a = a.match(/^(https?:\/\/)?([^\/\?#]*)/) ? a[2].replace(/.*@/, '') : w
+    return a
   }
   mt.url.Q = function (a) {
     return (a = mt.url.vb(a)) ? a.replace(/:\d+$/, '') : a
@@ -224,7 +225,7 @@
   })()
   // mt.event
   mt.event = {}
-  mt.event.e = function (a, b, d) { // 为页面元素a添加
+  mt.event.e = function (a, b, d) { // 为页面元素a添加事件类型b，处理方法为d
     a.attachEvent ? a.attachEvent('on' + b, function (e) { d.call(a, e) }) : a.addEventListener && a.addEventListener(b, d, x) // x为false
   }
   mt.event.preventDefault = function (a) {
@@ -345,24 +346,28 @@
   }())
   // mt.localStorage
   mt.localStorage = {}
-  mt.localStorage.ga = function () {
+  mt.localStorage.ga = function () { // 在<head>标签末尾添加一个隐藏的input输入框
     if (!mt.localStorage.l) {
       try {
-        mt.localStorage.l = document.createElement('input'), mt.localStorage.l.type = 'hidden', mt.localStorage.l.style.display = 'none', mt.localStorage.l.addBehavior('#default#userData'), document.getElementsByTagName('head')[0].appendChild(mt.localStorage.l)
+        mt.localStorage.l = document.createElement('input')
+        mt.localStorage.l.type = 'hidden'
+        mt.localStorage.l.style.display = 'none'
+        mt.localStorage.l.addBehavior('#default#userData')
+        document.getElementsByTagName('head')[0].appendChild(mt.localStorage.l)
       } catch (a) {
         return x
       }
     }
     return v
   }
-  mt.localStorage.set = function (a, b, d) {
+  mt.localStorage.set = function (a, b, d) { // 本地存储添加新的项目a为key, getTime() + '|' + b 为值
     var e = new Date()
-    e.setTime(e.getTime() + d || 31536E6)
+    e.setTime(e.getTime() + d || 31536E6) // 加d天或加365天
     try {
       window.localStorage ? (b = e.getTime() + '|' + b, window.localStorage.setItem(a, b)) : mt.localStorage.ga() && (mt.localStorage.l.expires = e.toUTCString(), mt.localStorage.l.load(document.location.hostname), mt.localStorage.l.setAttribute(a, b), mt.localStorage.l.save(document.location.hostname))
     } catch (f) {}
   }
-  mt.localStorage.get = function (a) {
+  mt.localStorage.get = function (a) { // 获取存储在本地存储中key为a的值
     if (window.localStorage) {
       if (a = window.localStorage.getItem(a)) {
         var b = a.indexOf('|')
@@ -376,7 +381,7 @@
     }
     return w
   }
-  mt.localStorage.remove = function (a) {
+  mt.localStorage.remove = function (a) { // 移除key为a的项目
     if (window.localStorage) window.localStorage.removeItem(a)
     else if (mt.localStorage.ga()) {
       try {
@@ -405,22 +410,22 @@
   }
   // mt.Ya
   mt.Ya = {}
-  mt.Ya.log = function (a, b) {
+  mt.Ya.log = function (a, b) { // 添加图片日志,a为图片src,b为可执行函数
     var d = new Image()
-    var e = 'mini_tangram_log_' + Math.floor(2147483648 * Math.random()).toString(36)
+    var e = 'mini_tangram_log_' + Math.floor(2147483648 * Math.random()).toString(36) // mini_tangram_log_ + 6位随机字符
     window[e] = d
     d.onload = function () {
       d.onload = w
       d = window[e] = w
-      b && b(a)
+      b && b(a) // b为 true 返回后面的值
     }
     d.src = a
   }
   // mt.Ca
   mt.Ca = {}
-  mt.Ca.Cb = function () {
+  mt.Ca.Cb = function () { // 若存在swf插件则返回它的版本
     var a = ''
-    if (navigator.plugins && navigator.mimeTypes.length) {
+    if (navigator.plugins && navigator.mimeTypes.length) { // 判断是否存在swf插件
       var b = navigator.plugins['Shockwave Flash']
       b && b.description && (a = b.description.replace(/^.*\s+(\S+)\s+\S+$/, '$1'))
     } else if (window.ActiveXObject) {
@@ -430,11 +435,11 @@
     }
     return a
   }
-  mt.Ca.jc = function (a, b, d, e, f) {
+  mt.Ca.jc = function (a, b, d, e, f) { // 添加一个swf对象
     return '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" id="' + a + '" width="' + d + '" height="' + e + '"><param name="movie" value="' + b + '" /><param name="flashvars" value="' + (f || '') + '" /><param name="allowscriptaccess" value="always" /><embed type="application/x-shockwave-flash" name="' + a + '" width="' + d + '" height="' + e + '" src="' + b + '" flashvars="' + (f || '') + '" allowscriptaccess="always" /></object>'
   };
   (function () {
-    function a () {
+    function a () { // 若存在hm插件则返回真
       for (var a = x, d = document.getElementsByTagName('script'), e = d.length, e = e > 100 ? 100 : e, f = 0; f < e; f++) {
         var l = d[f].src
         if (l && l.indexOf('https://hm.baidu.com/h') === 0) {
@@ -446,7 +451,7 @@
     }
     return h.qb = a
   })()
-  var A = h.qb
+  var A = h.qb // 是否包含hm插件
   h.r = {
     nc: 'http://tongji.baidu.com/hm-web/welcome/ico',
     Va: 'hm.baidu.com/hm.gif',
@@ -494,7 +499,7 @@
   (function () {
     var a = {
       D: {},
-      e: function (a, d) {
+      e: function (a, d) { // 向D添加key为a,值为d的项
         this.D[a] = this.D[a] || []
         this.D[a].push(d)
       },
@@ -506,11 +511,14 @@
     return h.z = a
   })();
   (function () {
-    function a (a, e) {
+    function a (a, e) { // 添加地址为a的js文件,加载完毕之后执行函数e
       var f = document.createElement('script')
       f.charset = 'utf-8'
       b.d(e, 'Function') && (f.readyState ? f.onreadystatechange = function () {
-        if (f.readyState === 'loaded' || f.readyState === 'complete') f.onreadystatechange = w, e()
+        if (f.readyState === 'loaded' || f.readyState === 'complete') {
+          f.onreadystatechange = w
+          e()
+        }
       } : f.onload = function () {
         e()
       })
@@ -522,14 +530,14 @@
     return h.load = a
   })();
   (function () {
-    function a () {
+    function a () { // 当h.c.b.nv不为空的时候存储上一个页面的URL，否则获取上一个页面的URL
       var a = ''
-      if (h.c.b.nv) {
-        a = encodeURIComponent(document.referrer)
+      if (h.c.b.nv) { // 存储上一个页面的URL
+        a = encodeURIComponent(document.referrer)// 上一个页面的URL(含别人分享的页面)
         try {
           window.sessionStorage ? d.set('Hm_from_' + c.id, a) : b.set('Hm_from_' + c.id, a, 864E5)
         } catch (f) {}
-      } else {
+      } else { // 获取上一个页面的URL
         try {
           a = (window.sessionStorage ? d.get('Hm_from_' + c.id) : b.get('Hm_from_' + c.id)) || ''
         } catch (l) {}
@@ -545,12 +553,12 @@
     var b = mt.localStorage
     var d = mt.sessionStorage
     var e = {
-      getData: function (e) {
+      getData: function (e) { // 从cookie || sessionStorage || localStorage 里获取项目e的值
         try {
           return a.get(e) || d.get(e) || b.get(e)
         } catch (l) {}
       },
-      setData: function (f, l, g) {
+      setData: function (f, l, g) { // 将值存入 cookie || sessionStorage || localStorage
         try {
           a.set(f, l, {
             domain: e.P(),
@@ -559,30 +567,30 @@
           }), g ? b.set(f, l, g) : d.set(f, l)
         } catch (m) {}
       },
-      Rb: function (f) {
+      Rb: function (f) { // 从存储中移除key为f的项
         try {
-          a.set(f, '', {
-            domain: e.P(),
-            path: e.X(),
-            O: -1
-          }), d.remove(f), b.remove(f)
+          a.set(f, '', { domain: e.P(), path: e.X(), O: -1 })
+          d.remove(f)
+          b.remove(f)
         } catch (l) {}
       },
-      T: function (a, e) {
-        a = '.' + a.replace(/:\d+/, '')
+      T: function (a, e) { // a与e域名是否相同
+        a = '.' + a.replace(/:\d+/, '') // 在a前加个.，并将冒号及紧随其后的连续数字替换成空
         e = '.' + e.replace(/:\d+/, '')
         var b = a.indexOf(e)
         return b > -1 && b + e.length === a.length
       },
-      ba: function (a, e) {
+      ba: function (a, e) { // 地址a去掉协议头之后，判断是否能在开始位置匹配到e
         a = a.replace(/^https?:\/\//, '')
         return a.indexOf(e) === 0
       },
-      P: function () {
-        for (var a = document.location.hostname, b = 0, d = c.dm.length; b < d; b++) if (e.T(a, c.dm[b])) return c.dm[b].replace(/(:\d+)?[/?#].*/, '')
+      P: function () { // 返回当前域名
+        for (var a = document.location.hostname, b = 0, d = c.dm.length; b < d; b++) {
+          if (e.T(a, c.dm[b])) return c.dm[b].replace(/(:\d+)?[/?#].*/, '')
+        }
         return a
       },
-      X: function () {
+      X: function () { // 判断要跳转的页面，是否属于需要统计域名的下级目录,是的话返回: 域名+'/'
         for (var a = 0, b = c.dm.length; a < b; a++) {
           var d = c.dm[a]
           if (d.indexOf('/') > -1 && e.ba(document.location.href, d)) return d.replace(/^[^/]+(\/.*)/, '$1') + '/'
@@ -617,35 +625,35 @@
       init: function () {
         m.Lb()
       },
-      Lb: function () {
+      Lb: function () { // 获取user信息
         try {
           var n = b.parse(decodeURIComponent(d.getData(g)))
           a.d(n, 'Object') && (e.user = n)
         } catch (f) {}
       },
-      A: function (a) {
+      A: function (a) { // 以对象形式返回session和user信息
         var b = {}
-        e[a] !== r && (b = e[a])
+        e[a] !== r && (b = e[a]) // 获取e[a]值
         a = this.ta()
         for (var d in b) b.hasOwnProperty(d) && (a[d] = b[d])
         return a
       },
-      ta: function () {
+      ta: function () { // 以对象形式返回session和user信息
         for (var a = {}, b, d = l.length - 1; d >= 0; d--) {
           b = e[l[d]]
           for (var f in b) b.hasOwnProperty(f) && (a[f] = b[f])
         }
         return a
       },
-      setProperty: function (d, f, g) {
+      setProperty: function (d, f, g) { // 将对象f的项赋给对象e中key为d的项
         var l = e[d]
-        if (a.d(l, 'Object') && a.d(f, 'Object')) {
-          for (var s in f) {
+        if (a.d(l, 'Object') && a.d(f, 'Object')) { // 若l和f都为Object
+          for (var s in f) { // 遍历对象f
             if (f.hasOwnProperty(s)) {
-              var k = a.g(String(s))
+              var k = a.g(String(s)) // 替换特殊字符
               if (g || !((/^_/.test(k) || /_$/.test(k)) && k !== '_iden')) {
                 var p = f[s]
-                if (p == w) delete l[k]
+                if (p === w) delete l[k]
                 else {
                   if (a.d(p, 'Object') || a.d(p, 'Array')) p = b.stringify(p)
                   p = a.g(String(p))
@@ -660,21 +668,19 @@
           d === 'user' && m.za()
         }
       },
-      s: function (b) {
-        b !== r && (b === 'userId' && a.d(e.user, 'Object') ? (delete e.user.uid_, m.za()) : b === 'user' && a.d(e.user, 'Object') ? (b = e.user.uid_, e.user = b === r ? {} : {
-          uid_: b
-        }, m.za()) : e[b] !== r && (e[b] = {}))
+      s: function (b) { // b为'userId'则删除对象e中user.uid且缓存用户信息，若b为'user'则如果e.user.uid_不为空,e.user={'uid':e.user.uid_}且缓存用户信息
+        b !== r && (b === 'userId' && a.d(e.user, 'Object') ? (delete e.user.uid_, m.za()) : b === 'user' && a.d(e.user, 'Object') ? (b = e.user.uid_, e.user = b === r ? {} : { uid_: b }, m.za()) : e[b] !== r && (e[b] = {}))
       },
-      za: function () {
+      za: function () { // 缓存用户信息,key 为 'Hm_up_' + c.id
         try {
           d.setData(g, encodeURIComponent(b.stringify(e.user)), c.age)
         } catch (a) {}
       },
-      Mb: function (a, b, d) {
+      Mb: function (a, b, d) { // 设置对象e中key为a的项属性为b的值为d
         var f = v
         var g = e[a]
         if (encodeURIComponent(String(b)).length > 256 || encodeURIComponent(String(d)).length > 256) f = x
-        else {
+        else { // b和d长度都不超过256
           var k = g[b]
           g[b] = {
             value: d,
@@ -685,13 +691,15 @@
         }
         return f
       },
-      M: function (a) {
+      M: function (a) { // 对象a中所有项先根据scope值自行拼接成特定字符串，然后用'!'将这些字符串拼接起来
         var e = []
         var b; var d
-        for (d in a) a.hasOwnProperty(d) && (b = [d, a[d].value], (a[d].scope === 1 || a[d].scope === 2) && b.push(a[d].scope), e.push(b.join('*')))
+        for (d in a) {
+          a.hasOwnProperty(d) && (b = [d, a[d].value], (a[d].scope === 1 || a[d].scope === 2) && b.push(a[d].scope), e.push(b.join('*')))
+        }
         return e.join('!')
       },
-      Na: function (a) {
+      Na: function (a) { // 获取对象f中key为a的项
         a = f[a]
         return a !== r ? a : f.others
       }
@@ -705,7 +713,7 @@
     var e = h.z
     var f = h.N
     var l = f.M
-    if (b.isArray(c.cptrk) && c.cptrk.length > 0) {
+    if (b.isArray(c.cptrk) && c.cptrk.length > 0) { // cptrk 长度大于0
       var g = {
         Ta: {},
         ea: {},
@@ -763,11 +771,11 @@
     var a = mt.lang
     var b = mt.f
     var d = {
-      W: function (a, f) {
+      W: function (a, f) { //
         return function (l) {
-          var g = l.target || l.srcElement
+          var g = l.target || l.srcElement // 事件l触发时鼠标所在对象
           if (g) {
-            var m = g.getAttribute(a.fa)
+            var m = g.getAttribute(a.fa) // 获取clientX
             l = l.clientX + ':' + l.clientY
             if (m && m === l) g.removeAttribute(a.fa)
             else if (f && f.length > 0 && (g = b.yb(g)) && g.length) {
@@ -781,8 +789,9 @@
         for (var d = {}, g = String(b).split('>').length, m = 0; m < g; m++) d[b] = '', b = b.substring(0, b.lastIndexOf('>'))
         e && (a.d(e, 'Object') && e.Ja) && e.Ja(d)
       },
-      Qb: function (a, b) {
+      Qb: function (a, b) { // 设置鼠标位置
         return function (d) {
+          // target 和 srcElement 都是返回事件触发时鼠标所在的对象
           (d.target || d.srcElement).setAttribute(a.fa, d.clientX + ':' + d.clientY)
           a && a.w && (b ? a.w(b) : a.w('#' + encodeURIComponent(this.id), d.type))
         }
@@ -800,21 +809,22 @@
     var g = l.M
     var m = {
       fa: 'HM_ce',
-      ab: function () {
+      ab: function () { // 为document添加点击事件处理方法为h.oa.W,为c.cetrk指向的元素添加点击事件,处理函数为h.oa.Qb
         if (c.cetrk && c.cetrk.length) {
           d.e(document, 'click', f.W(m, c.cetrk))
-          for (var e = 0, g = c.cetrk.length; e < g; e++) {
+          for (var e = 0, g = c.cetrk.length; e < g; e++) { // 为c.cetrk指向的元素添加点击事件,处理函数为h.oa.Qb
             var l
             try {
               l = b.parse(decodeURIComponent(String(c.cetrk[e])))
             } catch (u) {
               l = {}
             }
-            var s = l.p || ''; s.indexOf('>') === -1 && (s.indexOf('#') === 0 && (s = s.substring(1)), (s = a.pa(s)) && d.e(s, 'click', f.Qb(m, l)))
+            var s = l.p || ''
+            s.indexOf('>') === -1 && (s.indexOf('#') === 0 && (s = s.substring(1)), (s = a.pa(s)) && d.e(s, 'click', f.Qb(m, l)))
           }
         }
       },
-      Ja: function (a) {
+      Ja: function (a) { // 遍历c.cetrk 并执行m.w方法
         if (c.cetrk && c.cetrk.length) {
           for (var e = 0, d = c.cetrk.length; e < d; e++) {
             var f
@@ -827,13 +837,13 @@
           }
         }
       },
-      w: function (b) {
+      w: function (b) { // 遍历b.a
         h.c.b.et = 7
         var d = b && b.k || ''
         var d = e.g(d)
         var f = {}
         if (b && b.a && e.d(b.a, 'Object')) {
-          for (var m in b.a) {
+          for (var m in b.a) { // 遍历b.a
             if (b.a.hasOwnProperty(m)) {
               var s = a.La(b.a[m] || '')
               var s = s ? a.qa(s, x) : ''
@@ -844,7 +854,7 @@
         f._iden = d
         l.setProperty('customEvent', f)
         h.c.b.ep = ''
-        h.c.b.p = g(l.A('customEvent'))
+        h.c.b.p = g(l.A('customEven\t'))
         h.c.i()
         h.c.b.p = ''
         l.s('customEvent')
@@ -929,7 +939,7 @@
         h.c.b.p = ''
       },
       V: function () {
-        return function () {
+        return function () { // 将数组q中元素使用'!'连接成字符串，并以之为参数执行t.w方法
           q && q.length && (t.w(q.join('!')), q = [])
         }
       }
@@ -987,14 +997,19 @@
     var b = h.r
     var d = h.load
     var e = h.rb
-    h.z.e('pv-b', function () {
+    h.z.e('pv-b', function () { // 加载hl.js 或t.js
       var f = b.protocol + '//crs.baidu.com/'
       c.rec && a.Ba(function () {
         for (var l = 0, g = c.rp.length; l < g; l++) {
-          var m = c.rp[l][0]
+          var m = c.rp[l][0] // 32542
           var n = c.rp[l][1]
           var q = a.pa('hm_t_' + m)
-          if (n && !(n == 2 && !q || q && q.innerHTML !== '')) q = '', q = Math.round(Math.random() * b.ca), q = n == 4 ? f + 'hl.js?' + ['siteId=' + c.id, 'planId=' + m, 'rnd=' + q].join('&') : f + 't.js?' + ['siteId=' + c.id, 'planId=' + m, 'from=' + e(), 'referer=' + encodeURIComponent(document.referrer), 'title=' + encodeURIComponent(document.title), 'rnd=' + q].join('&'), d(q)
+          if (n && !(n === 2 && !q || q && q.innerHTML !== '')) {
+            q = ''
+            q = Math.round(Math.random() * b.ca) // b.ca = 2147483647
+            q = n === 4 ? f + 'hl.js?' + ['siteId=' + c.id, 'planId=' + m, 'rnd=' + q].join('&') : f + 't.js?' + ['siteId=' + c.id, 'planId=' + m, 'from=' + e(), 'referer=' + encodeURIComponent(document.referrer), 'title=' + encodeURIComponent(document.title), 'rnd=' + q].join('&')
+            d(q)
+          }
         }
       })
     })
@@ -1009,19 +1024,24 @@
         h.c.i()
       }
     }
-    function b () {
+    function b () { // 每隔100ms更新一次u或s值
       clearTimeout(y)
       var a
-      p && (a = document[p] == 'visible')
+      p && (a = document[p] === 'visible')
       z && (a = !document[z])
       m = typeof a === 'undefined' ? v : a
-      if ((!g || !n) && m && q) k = v, u = +new Date()
-      else if (g && n && (!m || !q)) k = x, s += +new Date() - u
+      if ((!g || !n) && m && q) {
+        k = v
+        u = +new Date()
+      } else if (g && n && (!m || !q)) {
+        k = x
+        s += +new Date() - u
+      }
       g = m
       n = q
-      y = setTimeout(b, 100)
+      y = setTimeout(b, 100) // 每隔100ms执行一次b()
     }
-    function d (a) {
+    function d (a) { // 若a是document属性返回a，若不是分别加上'webkit', 'ms', 'moz', 'o'前缀再判断一次
       var p = document
       var b = ''
       if (a in p) b = a
@@ -1036,10 +1056,13 @@
       }
       return b
     }
-    function e (a) {
-      if (!(a.type == 'focus' || a.type == 'blur') || !(a.target && a.target != window)) q = a.type == 'focus' || a.type == 'focusin' ? v : x, b()
+    function e (a) { // 判断参数a的类型以更新q值
+      if (!(a.type === 'focus' || a.type === 'blur') || !(a.target && a.target !== window)) {
+        q = a.type === 'focus' || a.type === 'focusin' ? v : x
+        b()
+      }
     }
-    var f = mt.event
+    var f = mt.event // 事件
     var l = h.z
     var g = v
     var m = v
@@ -1083,25 +1106,30 @@
     var b = h.r
     var d = h.load
     var e = {
-      Jb: function (e) {
+      Jb: function (e) { // 加载x.js
         if ((window._dxt === r || a.d(window._dxt, 'Array')) && typeof h.c !== 'undefined') {
           var l = h.c.P()
           d([b.protocol, '//datax.baidu.com/x.js?si=', c.id, '&dm=', encodeURIComponent(l)].join(''), e)
         }
       },
-      Zb: function (b) {
-        if (a.d(b, 'String') || a.d(b, 'Number')) window._dxt = window._dxt || [], window._dxt.push(['_setUserId', b])
+      Zb: function (b) { // 将b存储到对象window._dxt数组
+        if (a.d(b, 'String') || a.d(b, 'Number')) {
+          window._dxt = window._dxt || []
+          window._dxt.push(['_setUserId', b])
+        }
       }
     }
-    return h.lb = e
+    h.lb = e
+    return h.lb
   })();
   (function () {
-    function a (a, b, e, d) {
+    function a (a, b, e, d) { // 若a为'',返回b*e*d字符串
       if (!(a === r || b === r || d === r)) {
-        if (a === '') return [b, e, d].join('*')
+        if (a === '') return [b, e, d].join('*') // 若a为'',返回b*e*d字符串
         a = String(a).split('!')
         for (var g, f = x, k = 0; k < a.length; k++) {
-          if (g = a[k].split('*'), String(b) === g[0]) {
+          g = a[k].split('*')
+          if (String(b) === g[0]) {
             g[1] = e
             g[2] = d
             a[k] = g.join('*')
@@ -1113,7 +1141,7 @@
         return a.join('!')
       }
     }
-    function b (a) {
+    function b (a) { // 将a所有属性的值转化成string格式
       for (var d in a) {
         if ({}.hasOwnProperty.call(a, d)) {
           var y = a[d]
@@ -1142,7 +1170,7 @@
       },
       init: function () {
         k.j = 0
-        u.init()
+        u.init() // 获取user信息,json形式
         m.e('pv-b', function () {
           k.mb()
           k.ob()
@@ -1163,17 +1191,22 @@
       },
       mb: function () {
         var a = window._hmt || []
-        if (!a || e.d(a, 'Array')) {
+        if (!a || e.d(a, 'Array')) { // a为空或a为数组
           window._hmt = {
             id: c.id,
             cmd: {},
-            push: function () {
+            push: function () { // 将arguments中数组变量插入cmd对象
               for (var a = window._hmt, b = 0; b < arguments.length; b++) {
                 var p = arguments[b]
-                e.d(p, 'Array') && (a.cmd[a.id].push(p), p[0] === '_setAccount' && (p.length > 1 && /^[0-9a-f]{32}$/.test(p[1])) && (p = p[1], a.id = p, a.cmd[p] = a.cmd[p] || []))
+                if (e.d(p, 'Array')) {
+                  a.cmd[a.id].push(p)
+                  p[0] === '_setAccount' && (p.length > 1 && /^[0-9a-f]{32}$/.test(p[1])) && (p = p[1], a.id = p, a.cmd[p] = a.cmd[p] || [])
+                }
               }
             }
-          }, window._hmt.cmd[c.id] = [], window._hmt.push.apply(window._hmt, a)
+          }
+          window._hmt.cmd[c.id] = []
+          window._hmt.push.apply(window._hmt, a)
         }
       },
       ob: function () {
@@ -1200,7 +1233,10 @@
         a.length > 1 && /^[0-9a-f]{32}$/.test(a[1]) && (k.j |= 1)
       },
       _setAutoPageview: function (a) {
-        if (a.length > 1 && (a = a[1], x === a || v === a)) k.j |= 2, h.c.Oa = a
+        if (a.length > 1 && (a = a[1], x === a || v === a)) {
+          k.j |= 2
+          h.c.Oa = a
+        }
       },
       _trackPageview: function (a) {
         if (a.length > 1 && a[1].charAt && a[1].charAt(0) === '/') {
@@ -1382,14 +1418,14 @@
             if (b.plugins = b.plugins || {}, b.G = b.G || {}, b.plugins[d] && !b.G[d]) b.G[d] = new b.plugins[d](f)
             else {
               b.B = b.B || []
-              for (var f = 0, l = b.B.length; f < l; f++) if (b.B[f][1] === d) return
+              for (var ff = 0, l = b.B.length; ff < l; ff++) if (b.B[ff][1] === d) return
               b.B.push(a)
               k._require([w, g.Pb + d + '.js'])
             }
           }
         }
       },
-      _trackCustomEvent: function (a) {
+      _trackCustomEvent: function (a) { // 追踪 CustomEvent
         if (a.length > 1) {
           var b = a[1]
           a = a[2]
@@ -1449,7 +1485,9 @@
         return x
       },
       P: function () {
-        for (var a = document.location.hostname, b = 0, d = c.dm.length; b < d; b++) if (this.T(a, c.dm[b])) return c.dm[b].replace(/(:\d+)?[/?#].*/, '')
+        for (var a = document.location.hostname, b = 0, d = c.dm.length; b < d; b++) {
+          if (this.T(a, c.dm[b])) return c.dm[b].replace(/(:\d+)?[/?#].*/, '')
+        }
         return a
       },
       X: function () {

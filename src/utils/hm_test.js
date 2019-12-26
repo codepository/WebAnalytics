@@ -3,6 +3,40 @@ window.onload = function () {
   function mt () {}
   var x = !1
   var w = null
+  var r = void 0
+  var c = {
+    // 百度账号ID
+    id: '24365f112a3299d4ed3fb868a9d48bfb',
+    dm: ['news.fznews.com.cn'],
+    js: 'tongji.baidu.com/hm-web/js/',
+    etrk: [],
+    cetrk: [],
+    cptrk: [],
+    icon: '',
+    ctrk: false,
+    align: -1,
+    nv: -1,
+    vdur: 1800000,
+    age: 31536000000,
+    rec: 1,
+    rp: [
+      [32542, 2]
+    ],
+    trust: 0,
+    vcard: 0,
+    qiao: 0,
+    lxb: 0,
+    kbtrk: 0,
+    pt: 0,
+    spa: 0,
+    aet: '',
+    hca: 'E58510985600DB9C',
+    conv: 0,
+    med: 0,
+    cvcc: '',
+    cvcf: [],
+    apps: 'siteId=3964532&goTop=1'
+  }
   mt.prototype.lang = {}
   mt.prototype.lang.d = function (a, b) {
     return '[object ' + b + ']' === {}.toString.call(a)
@@ -115,10 +149,76 @@ window.onload = function () {
     a = a || document
     return parseInt(window.pageYOffset || a.documentElement.scrollTop || a.body && a.body.scrollTop || 0, 10)
   }
-  function b () {
-    var a = 0
-    console.log(screen.orientation)
+  mt.prototype.localStorage = {}
+  mt.prototype.localStorage.ga = function () {
+    console.log('ga')
+    var input = document.createElement('input')
+    // input.addBehavior('#default#userData')
+    console.log(input)
+    document.getElementsByTagName('head')[0].appendChild(input)
+    console.log(document.getElementsByTagName('head')[0])
   }
-  b()
   var instance = new mt()
+
+  // h
+  function h () {}
+  var a = {
+    D: {},
+    e: function (a, d) {
+      this.D[a] = this.D[a] || []
+      this.D[a].push(d)
+    },
+    I: function (a, d) {
+      this.D[a] = this.D[a] || []
+      for (var e = this.D[a].length, f = 0; f < e; f++) this.D[a][f](d)
+    }
+  }
+  h.prototype.z = a
+  var ins = new h()
+  var host = 'localhost'
+  function T (a, e) {
+    a = '.' + a.replace(/:\d+/, '') // 在a前加个.，并将冒号及紧随其后的连续数字替换成空
+    e = '.' + e.replace(/:\d+/, '')
+    console.log(e)
+    var b = a.indexOf(e)
+    console.log(b)
+    console.log('a.length=' + a.length)
+    console.log('b.length=' + (b + e.length))
+    return b > -1 && b + e.length === a.length
+  }
+  var e = {
+    pageview: {},
+    session: { 'scope': 2, 'value': 's1' },
+    autoEventTracking: {},
+    customEvent: { 'scope': 3, 'value': 'c1' },
+    user: { 'scope': 1, 'value': 'u1', 'uid_': 'uid' }
+  }
+  var l = ['session', 'user']
+  function ta () {
+    for (var a = {}, b, d = l.length - 1; d >= 0; d--) {
+      b = e[l[d]]
+      for (var f in b) b.hasOwnProperty(f) && (a[f] = b[f])
+    }
+    return a
+  }
+  function A (a) {
+    var b = {}
+    e[a] !== undefined && (b = e[a]) // 获取e[a]值
+    a = ta()
+    for (var d in b) {
+      b.hasOwnProperty(d) && (a[d] = b[d])
+    }
+    return a
+  }
+  function M (a) {
+    var e = []
+    var b; var d
+    for (d in a) {
+      a.hasOwnProperty(d) && (b = [d, a[d].value], (a[d].scope === 1 || a[d].scope === 2) && b.push(a[d].scope), e.push(b.join('*')))
+    }
+    console.log(e)
+    return e.join('!')
+  }
+  this.console.log(document.location)
+  this.console.log(document.location.hash)
 }

@@ -16,7 +16,7 @@
     "js-cookie": "^2.2.0",
     "jsonp": "^0.2.1",
     "lodash.defaultsdeep": "^4.6.1",
-    "node-sass": "^4.9.3",
+    "node-sass": "^7.0.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.5.17",
     "vue-chartist": "^2.1.2",
